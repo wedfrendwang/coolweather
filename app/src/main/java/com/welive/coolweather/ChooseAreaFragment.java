@@ -96,7 +96,19 @@ public class ChooseAreaFragment extends Fragment {
                 }else if(currentLevel == LEVEL_CITY){
                     selectedCity = cityList.get(position);
                     queryCounties();
+                }else if(currentLevel == LEVEL_COUNTY){
+                    String weatherId= countyList.get(position).getWeatherId();
+                    if (getActivity() instanceof MainActivity){
+                    WeatherActivity.intentAction(getContext(),countyList.get(position).getWeatherId());
+                    getActivity().finish();}
+                    else if(getActivity() instanceof WeatherActivity){
+                        WeatherActivity activity = ((WeatherActivity) getActivity());
+                        activity.drawerLayout.closeDrawers();
+                        activity.swipeRefreshLayout.setRefreshing(true);
+                        activity.requestWeather(weatherId);
+                    }
                 }
+
             }
         });
 
@@ -110,6 +122,9 @@ public class ChooseAreaFragment extends Fragment {
                 }
             }
         });
+        /**
+         * 查询省份
+         */
         queryProvinces();
     }
 
